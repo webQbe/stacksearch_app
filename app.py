@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from search import search # Import Search() we created
 import html # To render html
+from filter import Filter # Import filter class
 from storage import DBStorage 
 
 
@@ -24,6 +25,8 @@ def search_endpoint():
 
         # Perform search and filtering
         results = search(query)
+        fi = Filter(results)  # Initialize filter
+        results = fi.filter()  # Re-rank results
 
         # Convert filtered results to a list of dictionaries
         results_dict = results.to_dict(orient="records")
